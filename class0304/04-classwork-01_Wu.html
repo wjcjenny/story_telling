@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Class 3 classwork template 01</title>
+  </head>
+  <body>
+
+    <svg class="bar-chart" height="200">
+    </svg>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    
+    <script>
+      var data = [241, 702, 1023, 140, 556, 600];
+    
+      var width = 700;
+      var svg = d3.select('.bar-chart').attr('width',width);
+
+      var max_value = d3.max(data);
+
+      //If you had an array of dictionaries
+      // var max_value = d3.max(states, function(d) {return d['population'];});
+      var color_scale = d3.scale.linear()
+                          .domain([0,max_value])
+                          .range(['beige','red']);
+
+      var scale = d3.scale.linear()
+                    .domain([0,max_value]) //input: zero to largest value
+                    .range([0,width -123 -20]); //output: zero to svg width
+      // scale(2.5) type this in console, will show the data.
+      // -20 is for padding on the right
+      // -123 is for padding on the left
+      
+
+      svg.selectAll('rect')
+          .data(data)
+          .enter()
+          .append('rect')
+          .attr('x', 123)
+          .attr('y', function(d, i) {
+            return i * 20; // space them out
+          })
+          .attr('height', 10)
+          .style('fill', function(d) {
+            // console.log(d);
+            // console.log(scale(d));
+            // console.log('-----');
+            return color_scale(d);
+          })
+          .attr('width', function(d) {
+            return scale(d);
+          });
+
+      //add text to label
+      var labels = svg.selectAll('text')
+                        .data(data)
+                        .enter()
+                        .append('text')
+                        .text( function(d) {
+                          return d;
+                        })
+                        .attr('x', 105)
+                        .attr('y', function(d, i) {
+                          return i * 20 + 10; // space them out
+                        })
+                        .attr('class', 'label')
+                        .attr('text-anchor', 'end');
+
+
+
+      var axis = d3.svg.axis()
+                        .orient('bottom')
+                        // can change into 'top, left, bottom'.
+                        .ticks(3)
+                        // change the ticks!! for the scale
+                        // to give the exact tick value, we do this:
+                        // .tickValues([0,250,500,1000])
+                        .scale(scale);
+      // Since now, we have made the axis label, 
+      // but we still have to add to the page
+
+
+      // Then we do following
+      svg.append('g')
+          .attr('transform', 'translate(123,120)')
+          //This is to make the scale bar right at the position below all the rectangles.
+          .attr('class','xaxis')
+          .call(axis);
+      // It have to be 'g', it cannot change to any other alphabet
+    </script>
+
+    <!-- now do the style for the labels -->
+    <style>
+    .xaxis path,
+    .xaxis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+
+    .label {
+        font-family: sans-serif;
+        font-size: 12px;
+    }
+
+    .xaxis text {
+        font-family: sans-serif;
+        font-size: 11px;
+    }
+    </style>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
