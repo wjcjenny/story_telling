@@ -1,0 +1,152 @@
+e.g. http://thumbnails-visually.netdna-ssl.com/diagram-of-the-causes-of-mortality-in-the-army-in-the-east_50290bba68081_w1500.jpeg
+e.g. http://handsomeatlas.tumblr.com/post/31419588222/lapping-bar-graphs
+(olden days data viz used to have no rules)
+
+e.g. http://awesome.good.is/transparency/web/0906/trans0609largestbankruptcies.html
+
+e.g. http://www.xoxosoma.com/iceland/
+
+e.g. http://jonathansoma.com/tokyo-tuesday/
+(Security thing! Go to System Preferences, then Java, then open the Control Panel, then Security, then Edit Site List... and add http://jonathansoma.com/tokyo-tuesday/)
+e.g. http://www.nytimes.com/interactive/2009/07/31/business/20080801-metrics-graphic.html?_r=0
+
+e.g. http://awesome.good.is/transparency/web/1104/congress/transparency.png
+
+e.g. http://jonathansoma.com/singles/
+
+
+1) one word to describe it?
+2) like it?
+3) adds value?
+4) better as a spreadsheet? 
+5) helps understand the topic?
+
+Soma doesn't like these questions, but they're sort of the standard questions you ask: what the point is
+Soma likes these better:
+
+1) simplification (does the story jump out at you?) vs. detail 
+2) storytelling (you get the gist right away) vs. exploration (easy way out? -- why Soma does write ups underneath, provide narrative)
+3) explanation vs. decoration (click bait)
+
+
+
+HOMEWORK
+
+1) Pick a http://datastori.es/ piece to listen to and write up at https://docs.google.com/a/columbia.edu/spreadsheets/d/1XpmlYX0fTe_oOeU8GDhVmCN1CEdst7GHA9mVJeJNWNI/edit?usp=sharing - you have over a year's worth to pick from, so track down something you'll find interesting! I'll let you know how we're turning in assignments on Thursday when we go over the syllabus.
+
+2) Spend a little time on Codecademy doing the HTML/CSS and JavaScript paths
+	HTML/CSS: https://www.codecademy.com/tracks/web
+	JavaScript: https://www.codecademy.com/en/tracks/javascript
+I'll want you to have a basic understanding of both of them - spending about a half hour in each should be a good foundation. Don't expect them to be fun or terribly practical :)
+
+============
+============
+============
+If you use Sublime Text 2, install according to 
+https://github.com/jsoma/track_url
+
+Tools > Track URL
+
+
+The rest of the world is divided into BC-AD and HTML is divided into Before HTML5 (HTML 4.01, XHTML) and HTML5
+
+<!DOCTYPE html>
+There used to be these really long strings at the start of htmls saying what version html you're using
+you can't get people who just want to put sparkly image on their myspace page to follow complicated rules, hence the simplicity
+
+jonathansoma.com/columbia/intro.html
+<!DOCTYPE html>
+<html>
+	<head>
+
+	</head>
+	<body>
+		<!-- This is content that the user will see -->
+	</body>
+</html>
+
+switching between windows
+command + tab (mac)
+alt + tab (windows)
+
+<h1></h1>
+google looks at these to do SEO
+
+<h1> <strong></strong> </h1>
+headers are automatically bold, so <strong></strong> does nothing
+
+CSS
+<style>
+
+</style>
+the lines are highlighted differently in a text editor
+
+inspect element 
+
+JavaScript
+<script>
+	//the worst way to share info
+	alert( "Hello world" ); //the browswer is very forgiving about `;`s unstil it isn't
+	//
+	console.log( "Hello world" );
+
+	//
+	console.log( "Hello"+3 ); // javascript is really forgiving, int, float, string, whatever
+
+	// variables
+	var name = "Hannibal";
+	console.log( "Hello "+name );
+
+	//whitespace 
+
+	// if-else, functions,
+
+	// import libraries (for all the stuff you can't do with vanilla javascript): jQuery, D3 
+	// cdnjs.org // screw downloading
+	// "minified"
+	//in the console, do `$` for description
+	//in the console, do `d3` for description ("It'll say some stuff")
+
+	//chaining: jQUery and D3 love this
+
+	// learnxinyminutes.com
+</script>
+"manupulating the DOM"
+CDN 
+
+<svg width="720" height="120">
+	<circle r="10" cx="0" cy="0"></circle>
+	<circle r="10" cx="0" cy="0"></circle>
+	<circle r="10" cx="0" cy="0"></circle>
+</svg>
+<script> //make sure your `<script>` tag is below your `<svg>` ........
+	var circles = d3.selectAll( "circle" );
+	console.log( circles ); //in the console, click on the triangles to see more, and it shows you all this garbage you don't want to see
+	//CSS is a little different for HTML and SVG: background-color and fill
+	circles.style( "fill","purple" );
+
+	var datapoints = [ 40,60,120 ];
+	//binding
+	circles.data( datapoints ); //hey first circle, you're going to be friends with the first piece of data, ...
+	//nothing happened yet
+	//loop through each circle-datapoint to set the radius individually:
+	circles.attr( "r",40 );
+	circles.attr( "r",function( d ){ return 40; } );
+	circles.attr( "r",function( d ){ console.log( d ); return 40; } );
+	circles.attr( "r",function( d ){ return d; } );
+	circles.attr( "r",function( d ){ return Math.sqrt( d ); } ); //people look at area, not length
+
+	circles.attr( "r",0 ).attr( "r",30 );
+	circles.attr( "r",0 ).attr( "r",function( d ){ return Math.sqrt( d ); } );
+	circles.attr( "r",0 ).transition().attr( "r",function( d ){ return Math.sqrt( d ); } );
+	circles.attr( "r",0 ).transition().duration( 10*1000 ).attr( "r",function( d ){ return Math.sqrt( d ); } );
+	//also: `.ease()` `.ease("linear")`
+	circles
+		.attr( "r",0 )
+		.transition().duration( 10*1000 )
+		.style( "fill","yellow" )
+		.attr( "r",function( d ){ return Math.sqrt( d ); } );
+
+	//the reason you want to use D3: 
+</script>
+

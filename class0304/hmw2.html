@@ -1,0 +1,96 @@
+<!-- Pick six states in the USA, and using http://water.usgs.gov/edu/wetstates.html, make a list of dictionaries that includes:
+
+The name of the state
+The total square miles of the state
+The percent of the state covered in water
+The land area square miles
+Manually out an <svg> element with six <rect> elements inside.
+Visualize the percent of the state covered in water in a horizontal bar graph, and make the bars blue.
+Manually type out an <svg>, but don't put any <rect> elements inside. Use a class to grab it.
+Visualize the total square miles of the state in a vertical bar graph.
+In the second graph, color any states with a square mileage over 50,000 a different color.
+
+Submit to https://neocities.org, upload your files and announce both URLs in #storytelling in Slack. Due Thursday by 9am. -->
+
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Jiachuan Wu Homdwork 2</title>
+	</head>
+
+	<body>
+		<svg class="new_chart" width="400" height="400">
+		    <rect y="10" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+		    <rect y="40" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+		    <rect y="70" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+		    <rect y="100" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+		    <rect y="130" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+		    <rect y="130" x="30" width="100" height="15" style="fill: rgb(153,0,0);"></rect>
+  		</svg>
+
+  		<svg class="new_chart_2" width="400" height="400">
+
+  		</svg>
+
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<!-- here is for first graph -->
+		<script>
+      		var small_country_data = [
+				{'name' : 'New York', 'total_area': 54555, 'land_area': 47126, 'p_water': 0.136}, 
+				{'name' : 'Florida', 'total_area': 65758, 'land_area': 53625, 'p_water': 0.185}, 
+				{'name' : 'Arizona', 'total_area': 113990, 'land_area': 113594, 'p_water': 0.003}, 
+				{'name' : 'California', 'total_area': 163695, 'land_area': 155779, 'p_water': 0.048}, 
+				{'name' : 'Mississippi', 'total_area': 48432, 'land_area': 46923, 'p_water': 0.031}, 
+				{'name' : 'New Jersey', 'total_area': 8723, 'land_area': 7354     , 'p_water': 0.157}, 
+		      ];
+    	</script>
+    	
+    	<script>
+    		var horizontal_rectangles = d3.selectAll("rect");
+    		console.log(horizontal_rectangles);
+    		horizontal_rectangles.data(small_country_data)
+    				  .attr('width',function(d) {
+    				  	return d['p_water']*1000;
+    				  })
+    				  .style('fill','blue')
+    				  .attr('x',30)
+    				  .attr('height',15);
+
+    	</script>
+
+
+ 
+ <!-- here is for second graph -->
+     	<script> 
+     		var vertical_rectangles = d3
+     			.select('.new_chart_2').selectAll('rect')
+     			.data(small_country_data).enter().append('rect');
+
+     		vertical_rectangles
+     				.attr('width',15)
+     				.attr('height',function(d) {
+     					return d['total_area']/1000;
+     				})
+					.style('fill',function(d) {
+	     				if (d['total_area']>50000) {
+	     					return '#DE9D35';
+	     				} 
+	     				else {
+	     					return '#F05B7B';
+	     				}
+     				})
+     				.attr('x',function(d,i) {
+     					return i*50+10;
+     				})
+     				.attr('y',function(d) {
+     					return -100+400-d['total_area']/1000;
+     				});
+
+	 	</script>
+
+ 	</body>
+ </html>
