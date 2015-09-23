@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Class 5 classwork template</title>
+    <style>
+    circle:hover {
+      fill: orange;
+    }
+    circle.selected {
+      fill: #FF66A3;
+    }
+    </style>
+  </head>
+
+  <body>
+    <h1>Lengths of Popular Books over the Centuries</h1>
+    <!-- https://github.com/jsoma/storytelling-2015 -->
+
+    <!--
+    Two ways to hide things in css:
+    display: none;
+    visibility: hidden;
+      -->
+    
+    <!-- <div class="infobox" style="display: none;"> -->
+    <div class="infobox" style="visibility: hidden;">
+      <h2 class="book-title">Book title!</h2>
+      <h3 class="book-author">Book author!</h3>
+      <p>Published: <strong class="book-published">1800</strong></p>
+      <p>Word count: <strong class="book-wods">10,000</strong></p>
+    </div>
+    <div id="graph"></div>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    
+    <script>
+    var datapoints = [
+      { 'title': 'Pride and Prejudice', 'author': 'Jane Austen', 'words': 120000, 'published': 1813 },
+      { 'title': 'Cryptonomicon', 'author': 'Neal Stephenson', 'words': 415000, 'published': 1999 },
+      { 'title': 'Great Gatsby', 'author': 'F. Scott Fitzgerald', 'words': 47094, 'published': 1925 },
+      { 'title': 'Song of Solomon', 'author': 'Toni Morrison', 'words': 92400, 'published': 1977 },
+      { 'title': 'White Teeth', 'author': 'Zadie Smith', 'words': 169000, 'published': 2000 },
+      { 'title': 'Madame Bovary', 'author': 'Gustave Flaubert', 'words': 118000, 'published': 1856 },
+      { 'title': 'Song of Solomon', 'author': 'Toni Morrison', 'words': 92400, 'published': 1977 },
+    ];
+    
+    var height = 300, 
+        width = 500;
+    var svg = d3.select("#graph").append("svg").attr('height', height).attr('width', width);
+    
+    var xscale = d3.scale.linear().domain([1800, 2010]).range([0, width]);
+
+    // because 0 is the top for y, it's the opposite of what you'd think
+    var yscale = d3.scale.linear().domain([0, 500000]).range([height, 0]);
+
+
+    var circles = svg.selectAll('circle')
+                      .data(datapoints)
+                      .enter()
+                      .append('circle')
+                      .attr('cx', function(d) {
+                        // use the published key vs the x scale
+                        return xscale(d['published']);
+                      })
+                      .attr('cy', function(d) {
+                        // use the words key vs the y scale
+                        return yscale(d['words']);
+                      })
+                      //.style('fill','black')
+                      .attr('r', 10)
+                      .on('click',function(d) {
+                        d3.select(".book-title").text(d['title']);
+                        d3.select(".book-author").text(d['author']);
+                        d3.select(".book-published").text(d['published']);
+                        d3.select(".book-words").text(d['words']);
+                        //d3.select(".infobox").style('display','block');
+                        //use display will change the position of the circles, they will give the way to the text when you click them.
+                        d3.select(".infobox").style('visibility', 'visible');
+                        //just grabs the first circle
+                        //d3.select('circle').style('fill', 'red');
+
+                        // Method 1:
+                        // // reset their colors and turn them all black
+                        // svg.selectAll('circle').transition().style('fill', 'black');
+                        // // eventually turn the clicked one red
+                        // d3.select(this).transition().duration(250).style('fill', 'red');
+
+                        // Method 2:
+                        svg.selectAll("circle").attr('class', '').transition().attr('r', 10);
+                        d3.select(this).attr('class', 'selected').transition().attr('r', 20);
+                        console.log(this);
+                      })
+                      // .on('mouseover', function(d) {
+                      //   // turn the element that is mouseover'd orange
+                      //   d3.select(this).style('fill', 'orange');
+                      // })
+                      // .on('mouseout', function(d) {
+                      //   d3.select(this).style('fill', '#000000');
+                      // });
+
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

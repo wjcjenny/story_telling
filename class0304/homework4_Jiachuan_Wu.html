@@ -22,20 +22,331 @@ You can turn them in all on the same page or across multiple pages. Submit your 
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Jiachuan Wu Homdwork4</title>
+		<title>Jiachuan Wu Homework4</title>
 	</head>
 
 	<body>
-		<svg>
-		</svg>
+		<h2>Jiachuan Wu Homework4</h2>
 
+		<h4>First Graphic</h4>
+			<svg class="horizontal_barchart" height="300" width="700"></svg>
+		<h4>Second Graphic</h4>
+			<svg class="barchart" height="350" width="800"></svg>
+		<h4>Third Graphic</h4>
+			<svg class="scatter_plot_1" width="900" height="550"></svg>
+		<h4>Forth Graphic</h4>
+			<svg class="scatter_plot_2" width="900" height="550"></svg>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+		
 		<script>
+			var states = [
+				{'name' : 'New Jersey', 'return': 0.48, 'fed_funding_pct': 26.87, 'fed_empl': 3.82, 'civ_empl': 1.78, 'affiliation':'D'}, 
+				{'name' : 'Delaware', 'return': 0.31, 'fed_funding_pct': 25.61, 'fed_empl': 7.68, 'civ_empl': 1.94, 'affiliation':'D'}, 
+				{'name' : 'Illinois', 'return': 0.45, 'fed_funding_pct': 26.41, 'fed_empl': 5.50, 'civ_empl': 2.72, 'affiliation':'D'}, 
+				{'name' : 'Minnesota', 'return': 0.54, 'fed_funding_pct': 26.88, 'fed_empl': 3.53, 'civ_empl': 2.95, 'affiliation':'D'}, 
+				{'name' : 'Kansas', 'return': 0.54, 'fed_funding_pct': 25.22, 'fed_empl': 14.60, 'civ_empl': 3.42, 'affiliation':'R'}, 
+				{'name' : 'California', 'return': 0.68, 'fed_funding_pct': 26.44, 'fed_empl': 8.86, 'civ_empl': 2.79, 'affiliation':'D'}, 
+				{'name' : 'Connecticut', 'return': 1.04, 'fed_funding_pct': 23.43, 'fed_empl': 4.42, 'civ_empl': 1.75, 'affiliation':'D'}, 
+				{'name' : 'Massachusetts', 'return': 0.74, 'fed_funding_pct': 29.68, 'fed_empl': 4.90, 'civ_empl': 3.35, 'affiliation':'D'}, 
+				{'name' : 'Nebraska', 'return': 0.41, 'fed_funding_pct': 32.71, 'fed_empl': 9.17, 'civ_empl': 3.56, 'affiliation':'R'}, 
+				{'name' : 'Ohio', 'return': 0.51, 'fed_funding_pct': 34.64, 'fed_empl': 5.13, 'civ_empl': 2.31, 'affiliation':'R'}, 
+		      ];
+
+		    //First Graphic
+		    var width1 = 700;
+      		var svg1 = d3.select('.horizontal_barchart').attr('width',width1);
+				max_value_return = d3.max(states, function(d) {return d['return'];});
+      		var scale1 = d3.scale.linear()
+                          .domain([0,max_value_return])
+                          .range([0, width1 - 123 -30]);
+
+      		svg1.selectAll('rect')
+	          .data(states)
+	          .enter()
+	          .append('rect')
+	          .attr('x', 123)
+	          .attr('y', function(d, i) {
+	            return i * 30; // space them out
+	          })
+	          .attr('height', 10)
+	          .style('fill', function(d) { 
+	          	if (d['affiliation'] == 'D') {
+	          		return '#537DF0';
+	          	}
+	          	if (d['affiliation'] == 'R') {
+	          		return '#DC3A2B';
+	          	}
+	          	else {
+	          		return '#C28AC9';
+	          	}
+	          })
+	          .attr('width', function(d) {
+	            return scale1(d['return']);
+	          });
+
+	         //add text to label
+		      var label1 = svg1.selectAll('text')
+		                        .data(states)
+		                        .enter()
+		                        .append('text')
+		                        .text( function(d) {
+		                          return d['name'];
+		                        })
+		                        .attr('x', 120)
+		                        .attr('y', function(d, i) {
+		                          return i * 30 + 10; // space them out
+		                        })
+		                        .attr('class', 'label')
+		                        .attr('text-anchor', 'end');
+
+
+
+		      var xaxis1 = d3.svg.axis()
+		                        .orient('bottom')
+		                        .ticks(8)
+		                        .scale(scale1);
+
+		      // Then we do following
+		      svg1.append('g')
+		          .attr('transform', 'translate(123,283)')
+		          //This is to make the scale bar right at the position below all the rectangles.
+		          .attr('class','xaxis')
+		          .call(xaxis1);
+		      // It have to be 'g', it cannot change to any other alphabet
+			
+
+
+		    //Second Graphic
+		    	var height2 = 350;
+		    	var svg2 = d3.select('.barchart').attr('height',height2);
+		    		max_value_funding = d3.max(states, function(d) {return d['fed_funding_pct'];});
+		    		min_value_funding = d3.min(states, function(d) {return d['fed_funding_pct'];});
+		    	var scale2 = d3.scale.linear()
+		    							.domain([0, max_value_funding])
+		    							.range([height2 -50 -50,0]);
+		    	var color_scale = d3.scale.linear()
+		    								.domain ([min_value_funding,max_value_funding])
+		    								.range (['beige','red']);
+		    	svg2.selectAll('rect')
+		    		.data(states)
+		    		.enter()
+		    		.append('rect')
+		    		.attr('y',function(d) {
+		    			return 50 + scale2(d['fed_funding_pct']);
+		    		})
+		    		.attr('x',function(d,i) {
+		    			return i * 70 + 123;
+		    		})
+		    		.attr('width', 20)
+		    		.style('fill',function(d) {
+		    			return color_scale(d['fed_funding_pct']);
+		    		})
+		    		.attr('height', function(d) {
+		    			return height2 - 100 - scale2(d['fed_funding_pct']);
+		    		});
+
+		    	var xlabel2 = svg2.selectAll('text')
+		    						.data(states)
+			                        .enter()
+			                        .append('text')
+			                        .text( function(d) {
+			                          return d['name'];
+			                        })
+			                        .attr('x', function(d, i) {
+			                          return i * 70 + 132; // space them out
+			                        })
+			                        .attr('y', 318)
+			                        .attr('class', 'label')
+			                        .attr('text-anchor', 'middle');
+			                        //.attr('transform',"rotate(-90)");         
+			                        //the way to do rotate is 
+			                        //rotate (-65,x,y)
+			                        //or use the function
+			                        // .attr('transform', function(d,i) {
+			                        // 	// it's like...
+			                        // 	// return "rotate(-65 50 10)"
+			                        // 	// it's a STRING that looks like a function
+			                        // 	return "rotate(-65 " + x(d) + " 10)";
+			                        // })
+
+			    var ylabel2  = svg2.selectAll('.lll')
+		    						.data(states)
+			                        .enter()
+			                        .append('text')
+			                        .text( function(d) {
+			                          return d['fed_funding_pct'];
+			                        })
+			                        .attr('x', function(d, i) {
+			                          return i * 70 + 132; // space them out
+			                        })
+			                        .attr('y', function(d, i) {
+			                          return 50 + scale2(d['fed_funding_pct'])-10; // space them out
+			                        })
+			                        .attr('class', 'label')
+			                        .attr('text-anchor', 'middle');
+
+			    var yaxis2 = d3.svg.axis()
+			    					.orient('left')
+			    					.ticks(8)
+			    					.scale(scale2);
+				// Then we do following
+		      	svg2.append('g')
+			          .attr('transform', 'translate(95,50)')
+			          //This is to make the scale bar right at the position below all the rectangles.
+			          .attr('class','yaxis')
+			          .call(yaxis2);
+			    // It have to be 'g', it cannot change to any other alphabet
+
+
+			//Third Graphic
+			    var width3 = 900;
+			    var height3 = 550;
+
+			    var svg3 = d3.select('.scatter_plot_1').attr('height', height3).attr('width', width3);
+			    max_value_empl = d3.max(states, function(d){ return d['fed_empl']; });
+			    min_value_empl = d3.min(states, function(d){ return d['fed_empl']; });
+
+			    var scale3_funding = d3.scale.linear()
+			                   		   .domain([min_value_funding, max_value_funding])
+			                   		   .range([0, width3 - 123 - 80]);
+			    var scale3_empl = d3.scale.linear()
+			                   		   .domain([0, max_value_empl])
+			                   		   .range([height3 - 50 - 80, 0]);
+			    var scale3_return = d3.scale.linear()
+			                                .domain([0, max_value_return])
+			                                .range([0, 13]);
+
+			    svg3.selectAll('circle')
+			       .data(states)
+			       .enter()
+			       .append('circle')
+			       .attr('cy', function(d) {
+			       	 return 50 + scale3_empl(d['fed_empl']);
+			       })
+			       .attr('cx', function(d) {
+			         return 123 + scale3_funding(d['fed_funding_pct']);
+			       })
+			       .attr('r', function(d) {
+			       	 return scale3_return(d['return']);
+			       })
+			       .style('fill', '#D7636F');
+
+			    var label3 = svg3.selectAll('text')
+			              		  .data(states)
+			              		  .enter()
+			              		  .append('text')
+			              		  .attr('class', 'label')
+			              		  .text(function(d){
+			                	    return d['name'];
+			             		  })
+			              		  .attr('x', function(d) {
+			              		  	return 123 + scale3_funding(d['fed_funding_pct']) + 13;
+			              		  })
+			              		  .attr('y', function(d) {
+			              		  	return 50 + scale3_empl(d['fed_empl']);
+			              		  })
+			              		  .attr('text-anchor', 'front'); 
+
+
+			//Forth Graphic
+			var width4 = 900;
+		    var height4 = 550;
+		    var svg4 = d3.select('.scatter_plot_2').attr('height', height4).attr('width', width4);
+		    var scale4_funding = d3.scale.linear()
+		                   		   .domain([min_value_funding, max_value_funding])
+		                   		   .range([0, width4 - 123 - 80]);
+		    var scale4_empl = d3.scale.linear()
+		                   		   .domain([0, max_value_empl])
+		                   		   .range([height4 - 50 - 80, 0]);
+		    var scale4_return = d3.scale.linear()
+		                                .domain([0, max_value_return])
+		                                .range([0, 13]);
+
+		    svg4.selectAll('circle')
+		        .data(states)
+		        .enter()
+		        .append('circle')
+		        .attr('cy', function(d) {
+		       	 return 50 + scale3_empl(d['fed_empl']);
+		        })
+		        .attr('cx', function(d) {
+		         return 123 + scale3_funding(d['fed_funding_pct']);
+		        })
+		        .attr('r', function(d) {
+		       	 return scale3_return(d['return']);
+		        })
+		        .style('fill', '#D7636F');
+
+		    var label4 = svg4.selectAll('text')
+		              		  .data(states)
+		              		  .enter()
+		              		  .append('text')
+		              		  .attr('class', 'label')
+		              		  .text(function(d){
+		                	    return d['name'];
+		             		  })
+		              		  .attr('x', function(d) {
+		              		  	return 123 + scale4_funding(d['fed_funding_pct']) + 13;
+		              		  })
+		              		  .attr('y', function(d) {
+		              		  	return 50 + scale4_empl(d['fed_empl']);
+		              		  })
+		              		  .attr('text-anchor', 'front'); 
+
+		    var xaxis4 = d3.svg.axis()
+		                       .orient('bottom')  
+		                       .ticks(10) 
+		                       .scale(scale4_funding);
+
+		    svg4.append('g')
+		        .attr('transform', 'translate(123, 500)')
+		        .attr('class', 'xaxis')
+		        .call(xaxis4);
+
+		    var yaxis4 = d3.svg.axis()
+		                       .orient('left')  
+		                       .ticks(10) 
+		                       .scale(scale4_empl);
+
+		    svg4.append('g')
+		        .attr('transform', 'translate(95, 50)')
+		        .attr('class', 'yaxis')
+		        .call(yaxis4);
+
+
+
 		</script>
 
-	</body>
-<html>
+			<!-- now do the style for the labels -->
+		    <style>
+		    .xaxis path,
+		    .xaxis line {
+		        fill: none;
+		        stroke: black;
+		        shape-rendering: crispEdges;
+		    }
+		    .yaxis path,
+		    .yaxis line {
+		        fill: none;
+		        stroke: black;
+		        shape-rendering: crispEdges;
+		    }
 
+		    .label {
+		        font-family: sans-serif;
+		        font-size: 10px;
+		    }
 
-
-
-
+		    .xaxis text {
+		        font-family: sans-serif;
+		        font-size: 10px;
+		    }
+		    .yaxis text {
+		    	font-family: sans-serif;
+		    	font-size: 10px;
+		    }
+		   
+		    </style>
+		  </body>
+		</html>
